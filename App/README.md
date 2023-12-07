@@ -2,30 +2,35 @@
 
 ## Dataset
 
-The dataset if from Kaggle [LINK](https://www.kaggle.com/datasets/thedevastator/cancer-patients-and-air-pollution-a-new-link),
-contains information about lung cancer patients, the features identifying risk factors for lung cancer.
+The dataset if from UCI [LINK](https://archive.ics.uci.edu/dataset/503/hepatitis+c+virus+hcv+for+egyptian+patients),
+contains information about Hepatitis C Virus (HCV) for Egyptian patients, dont have missing values.
 
 
-| Column               | Description                                                        | Range |
-|----------------------|--------------------------------------------------------------------|----------
-| Age                  | The patient's age. (Numeric)                                       | 14-73 |
-| Gender               | The patient's gender. (Categorical)                                | 1-2 |
-| Air Pollution       | The level of patient's exposure to air pollution. (Categorical)     | 1-8 |
-| Alcohol Use          | The patient's alcohol consumption level. (Categorical)             | 1-8 |
-| Dust Allergy         | The level of patient's dust allergy. (Categorical)                 | 1-8 |
-| Occupational Hazards | The level of patient's occupational hazards. (Categorical)         | 1-8 |
-| Genetic Risk         | The level of patient's genetic risk. (Categorical)                 | 1-7 |
-| Chronic Lung Disease | The level of patient's chronic lung disease. (Categorical)         | 1-7 |
-| Balanced Diet        | The level of patient's balanced diet. (Categorical)                | 1-7 |
-| Obesity              | The level of patient's obesity. (Categorical)                      | 1-7 |
-| Smoking              | The level of patient's smoking habit. (Categorical)                | 1-8 |
-| Passive Smoker       | The level of patient's exposure to secondhand smoke. (Categorical) | 1-8 |
-| Chest Pain           | The level of patient's chest pain. (Categorical)                   | 1-9 |
-| Coughing of Blood    | The level of patient's coughing of blood. (Categorical)            | 1-9 |
-| Fatigue              | The level of patient's fatigue. (Categorical)                      | 1-9 |
-| Weight Loss          | The level of patient's weight loss. (Categorical)                  | 1-8 |
-| Shortness of Breath  | The level of patient's shortness of breath. (Categorical)          | 1-9 |
-| Wheezing             | The level of patient's wheezing. (Categorical)                     | 1-8 |
-| Swallowing Difficulty | The level of patient's swallowing difficulty. (Categorical)       | 1-9 |
-| Clubbing of Finger Nails | The level of clubbing of the patient's finger nails(Categorical) | 1-9|
+| Variable Name               | Role    | Type    | Description                       |
+|-----------------------------|---------|---------|-----------------------------------|
+| Age                         | Feature | Integer |                                   |                                            
+| Gender                      | Feature | Binary  | [Male], [Female]                  |                                            
+| BMI                         | Feature | Integer |  Body Mass Index                  |
+| Fever                       | Feature | Binary  | [Absent], [Present]               |                                            
+| Nausea/Vomiting             | Feature | Binary  | [Absent], [Present]               |                                            
+| Headache                    | Feature | Binary  | [Absent], [Present]               |                                            
+| Diarrhea                    | Feature | Binary  | [Absent], [Present]               |                                            
+| Fatigue & generalized bone ache | Feature | Binary  | [Absent], [Present]           |                                            
+| Jaundice                    | Feature | Binary  | [Absent], [Present]               |                                            
+| Epigastric pain             | Feature | Binary  | [Absent], [Present]               |                                            
+| WBC                         | Feature | Integer | White blood cells                 |
+| RBC                         | Feature | Integer | Red blood cells                   |
+| HGB                         | Feature | Integer | Hemoglobin                        |
+| Plat                        | Feature | Integer | Platelets                         |
+| AST 1                       | Feature | Integer | aspartate transaminase ratio      |                      
+| ALT 1                       | Feature | Integer | alanine transaminase ratio 1 week |                    
+| ALT4                        | Feature | Integer | alanine transaminase ratio 4 weeks |                   
+| ALT 12                      | Feature | Integer | alanine transaminase ratio 12 weeks |                  
+| ALT 24                      | Feature | Integer | alanine transaminase ratio 24 weeks |                  
+| ALT 36                      | Feature | Integer | alanine transaminase ratio 36 weeks |                  
+| ALT 48                      | Feature | Integer | alanine transaminase ratio 48 weeks |                  
+| ALT after 24 w              | Feature | Integer | after 24 warnings alanine transaminase ratio 24 weeks | 
+| RNA Base                    | Feature | Integer |                        |                                
+| RNA 4                       | Feature | Integer |                        |                                
+| RNA 12                      | Feature | Integer |                        |                                
 

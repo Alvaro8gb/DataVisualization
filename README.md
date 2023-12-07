@@ -7,7 +7,7 @@ Welcome to the Data Visualization Practical Work repository for the MSc Data Sci
 
 1. **Shiny Tutorial**: This project is designed to help you learn the Shiny framework for developing data visualization applications. It serves as a hands-on tutorial, providing you with valuable insights into creating interactive data visualizations. [LINK](./ShinnyTutorial/)
 
-2. **Shiny App - Lung Cancer Analysis**: In this project, you will find a Shiny application that offers a descriptive analysis of lung cancer data. The application provides an interactive platform for exploring and visualizing data related to lung cancer, making it an informative tool for research and analysis. [LINK](./lungCancerApp/)
+2. **Shiny App - Hepatitis C Virus (HCV) for Egyptian patients**: In this project, you will find a Shiny application that offers a descriptive analysis of  data. The application provides an interactive platform for exploring and visualizing data related to lung cancer, making it an informative tool for research and analysis. [LINK](./App/)
 
 
 
