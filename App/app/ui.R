@@ -4,12 +4,12 @@ dataset <- read.csv("../dataset/ds-final.csv")
 
 departament <- list("d1", "d2")
 
+style <- "background-color: #F4F5F5;padding: 5px;"
+
 ui <- fluidPage(
   titlePanel("Hepatitis Visualization App"),
   verbatimTextOutput("members"),
   sidebarPanel(
-    selectInput("xaxis", "X-axis", choices = c("BMI", "Baselinehistological.staging", "Baseline.histological.Grading", "Age")),
-    selectInput("yaxis", "Y-axis", choices = c("Baselinehistological.staging", "Baseline.histological.Grading", "BMI", "Age")),
     sliderInput("age", "Age", min = min(dataset$Age), max = max(dataset$Age), value = c(min(dataset$Age), max(dataset$Age))),
     selectInput("gender", "Gender", choices = c("Male", "Female")),
     sliderInput("bmi", "BMI (Body Mass Index)", min = min(dataset$BMI), max = max(dataset$BMI), value = c(min(dataset$BMI), max(dataset$BMI))),
@@ -19,21 +19,25 @@ ui <- fluidPage(
     sliderInput("hgb", "HGB (Hemoglobin)", min = 10, max = 15, value = c(10, 15)),
     sliderInput("plat", "Platelet", min = 93013, max = 226464, value = c(93013, 226464))
   ),
-  
   mainPanel(
     textOutput("selectedValues"),
     fluidRow(
-      style = "background-color: #F4F5F5;padding: 5px;",
+      style = style,
       helpText("1. Idiom."),
-      plotOutput("idiom1scatterplot"),
+      fluidRow(
+      column(6, selectInput("xaxis", "X-axis", choices = c("BMI", "Baselinehistological.staging", "Baseline.histological.Grading", "Age"))),
+      column(6,  selectInput("yaxis", "Y-axis", choices = c("Baselinehistological.staging", "Baseline.histological.Grading", "BMI", "Age")))
+      ),
+      plotOutput("idiom1"),
     ),
     fluidRow(
-      style = "background-color: #F4F5F5;padding: 5px;",
+      style = style,
       helpText("2. Idiom"),
     ),
     fluidRow(
-      style = "background-color: #F4F5F5;padding: 5px;",
+      style = style,
       helpText("3. Idiom"),
+      plotOutput("idiom3"),
     )
   )
 )
