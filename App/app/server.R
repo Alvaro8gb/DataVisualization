@@ -14,12 +14,15 @@ time_series_1 <- c("ALT.1", "ALT.4", "ALT.12", "ALT.24", "ALT.36", "ALT.48")
 
 server <- function(input, output) {
   # TODO -sintoms filtering and others
+  
+  # Map input values to corresponding values in the dataset
+  gender_mapping <- c('Male' = '1', 'Female' = '2')
 
-  filter_dataset <- reactive({
+    filter_dataset <- reactive({
     dataset %>%
       filter(
         Age >= input$age[1] & Age <= input$age[2],
-        # Gender == input$gender,
+        Gender == gender_mapping[input$gender],
         BMI >= input$bmi[1] & BMI <= input$bmi[2],
         WBC >= input$wbc[1] & WBC <= input$wbc[2],
         RBC >= input$rbc[1] & RBC <= input$rbc[2],
@@ -62,6 +65,9 @@ server <- function(input, output) {
 
   output$idiom2 <- renderPlot({
     data <- filter_dataset()
+    histo_staging_counts <- table(data$Baselinehistological.staging)
+    barplot(histo_staging_counts, main = "Barplot of Baseline Histological Staging",
+            xlab = "Histological Staging", ylab = "Frequency", col = "lightblue")
   })
 
 

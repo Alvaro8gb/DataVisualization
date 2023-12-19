@@ -33,6 +33,7 @@ ui <- fluidPage(
     fluidRow(
       style = style,
       helpText("2. Idiom"),
+      plotOutput("idiom2"),
     ),
     fluidRow(
       style = style,
