@@ -11,9 +11,9 @@ ui <- fluidPage(
   verbatimTextOutput("members"),
   sidebarPanel(
     sliderInput("age", "Age", min = min(dataset$Age), max = max(dataset$Age), value = c(min(dataset$Age), max(dataset$Age))),
-    selectInput("gender", "Gender", choices = c("Male", "Female")),
+    selectInput("gender", "Gender", choices = c("Both", "Male", "Female")),
     sliderInput("bmi", "BMI (Body Mass Index)", min = min(dataset$BMI), max = max(dataset$BMI), value = c(min(dataset$BMI), max(dataset$BMI))),
-    checkboxGroupInput("symptoms", "Symptoms", choices = c("Fever", "Nausea/Vomiting", "Headache", "Diarrhea", "Fatigue and generalized", "Bone ache", "Jaundice", "Epigastric pain")),
+    checkboxGroupInput("symptoms", "Symptoms", choices = c("Fever", "Nausea/Vomting", "Headache", "Diarrhea", "Fatigue generalized bone ache", "Jaundice", "Epigastric pain")),
     sliderInput("wbc", "WBC (White blood cell)", min = 299, max = 12101, value = c(299, 12101)),
     sliderInput("rbc", "RBC (Red blood cells)", min = 3816422, max = 5018451, value = c(3816422, 5018451)),
     sliderInput("hgb", "HGB (Hemoglobin)", min = 10, max = 15, value = c(10, 15)),

@@ -3,6 +3,8 @@ library(shiny)
 library(dplyr)
 library(RColorBrewer)
 library(ggplot2)
+library(stringr)
+
 
 colors <- brewer.pal(n = 4, name = "Blues")
 
@@ -12,23 +14,26 @@ members <- list("Alvaro", "Maxi", "Mikel")
 
 time_series_1 <- c("ALT.1", "ALT.4", "ALT.12", "ALT.24", "ALT.36", "ALT.48")
 
+# Map input values to corresponding values in the dataset
+gender_mapping <- c('Male' = '1', 'Female' = '2', 'Both' = '3')
+
+
 server <- function(input, output) {
   # TODO -sintoms filtering and others
-  
-  # Map input values to corresponding values in the dataset
-  gender_mapping <- c('Male' = '1', 'Female' = '2')
-
+    
     filter_dataset <- reactive({
     dataset %>%
       filter(
         Age >= input$age[1] & Age <= input$age[2],
-        Gender == gender_mapping[input$gender],
+        (Gender == gender_mapping[input$gender] | input$gender == "Both"),
         BMI >= input$bmi[1] & BMI <= input$bmi[2],
         WBC >= input$wbc[1] & WBC <= input$wbc[2],
         RBC >= input$rbc[1] & RBC <= input$rbc[2],
         HGB >= input$hgb[1] & HGB <= input$hgb[2],
         Platelet >= input$plat[1] & Platelet <= input$plat[2]
-      )
+      ) %>%
+      filter(if_any(all_of(str_replace_all(input$symptoms, c(" " = ".", "/" = "."))), ~. == 1))
+      
   })
 
   output$members <- renderText({
@@ -77,7 +82,7 @@ server <- function(input, output) {
     cols <- c(time_series_1, c("Baselinehistological.staging"))
     df_subset <- data[, cols]
 
-    size <- 8
+    size <- 10
     df_plot <- head(df_subset, size)
 
     df_plot_long <- df_plot %>%
@@ -92,7 +97,7 @@ server <- function(input, output) {
 
 
     df_plot_long$Time <- factor(df_plot_long$Time,
-      levels = paste0("ALT.", c(1, 4, 12, 24, 36, 48)),
+      levels = time_series_1,
       ordered = TRUE
     )
 
