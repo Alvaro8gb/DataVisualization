@@ -50,7 +50,8 @@ server <- function(input, output) {
       ",\nWBC:", input$wbc[1], "-", input$wbc[2],
       ",\nRBC:", input$rbc[1], "-", input$rbc[2],
       ",\nHGB:", input$hgb[1], "-", input$hgb[2],
-      ",\nPlatelet:", input$plat[1], "-", input$plat[2]
+      ",\nPlatelet:", input$plat[1], "-", input$plat[2],
+      "Feature ", input$featureidiom2
     )
   })
 
@@ -69,10 +70,23 @@ server <- function(input, output) {
   })
 
   output$idiom2 <- renderPlot({
+    req(input$featureidiom2)
+
     data <- filter_dataset()
-    histo_staging_counts <- table(data$Baselinehistological.staging)
-    barplot(histo_staging_counts, main = "Barplot of Baseline Histological Staging",
-            xlab = "Histological Staging", ylab = "Frequency", col = "lightblue")
+
+
+    feature <- input$featureidiom2
+    target <- "Baselinehistological.staging"
+    data_subset <- data %>% select(feature, target)
+    
+    # Create a bar plot
+    plot <-  ggplot(data_subset, aes(x = factor(data_subset[[target]]), y = data_subset[[feature]])) +
+    geom_violin(fill = "lightblue", draw_quantiles = c(0.25, 0.5, 0.75)) +
+    geom_jitter(color = "darkblue", width = 0.2) +
+    labs(title = paste("Distribution of", feature, "with respect to", target),
+        x = target, y = feature)
+
+    return(plot)
   })
 
 
@@ -85,7 +99,7 @@ server <- function(input, output) {
     size <- 10
     df_plot <- head(df_subset, size)
 
-    df_plot_long <- df_plot %>%
+    df_plot_long <- df_subset %>%
       mutate(RowID = row_number())
 
     df_plot_long <- df_plot_long %>%

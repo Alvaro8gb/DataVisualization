@@ -6,6 +6,17 @@ departament <- list("d1", "d2")
 
 style <- "background-color: #F4F5F5;padding: 5px;"
 
+categorical_features <- c(
+    "Gender", 
+    "Fever",
+    "Nausea.Vomting",
+    "Headache",
+    "Diarrhea",
+    "Fatigue.generalized.bone.ache",
+    "Jaundice",
+    "Epigastric.pain"
+)
+
 ui <- fluidPage(
   titlePanel("Hepatitis Visualization App"),
   verbatimTextOutput("members"),
@@ -25,7 +36,7 @@ ui <- fluidPage(
       style = style,
       helpText("1. Idiom."),
       fluidRow(
-      column(6, selectInput("xaxis", "X-axis", choices = c("BMI", "Baselinehistological.staging", "Baseline.histological.Grading", "Age"))),
+      column(6, selectInput("xaxis", "X-axis", choices = c("BMI","WBC", "Baselinehistological.staging", "Baseline.histological.Grading", "Age"))),
       column(6,  selectInput("yaxis", "Y-axis", choices = c("Baselinehistological.staging", "Baseline.histological.Grading", "BMI", "Age")))
       ),
       plotOutput("idiom1"),
@@ -33,6 +44,9 @@ ui <- fluidPage(
     fluidRow(
       style = style,
       helpText("2. Idiom"),
+      fluidRow(
+      column(6, selectInput("featureidiom2", "Distribution feature", choices = categorical_features))
+      ),
       plotOutput("idiom2"),
     ),
     fluidRow(
