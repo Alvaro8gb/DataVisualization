@@ -14,14 +14,16 @@ members <- list("Alvaro", "Maxi", "Mikel")
 
 time_series_1 <- c("ALT.1", "ALT.4", "ALT.12", "ALT.24", "ALT.36", "ALT.48")
 
-# Map input values to corresponding values in the dataset
-gender_mapping <- c('Male' = '1', 'Female' = '2', 'Both' = '3')
+TARGET <- "Baselinehistological.staging"
 
+
+# Map input values to corresponding values in the dataset
+gender_mapping <- c("Male" = "1", "Female" = "2", "Both" = "3")
 
 server <- function(input, output) {
   # TODO -sintoms filtering and others
-    
-    filter_dataset <- reactive({
+
+  filter_dataset <- reactive({
     dataset %>%
       filter(
         Age >= input$age[1] & Age <= input$age[2],
@@ -32,8 +34,7 @@ server <- function(input, output) {
         HGB >= input$hgb[1] & HGB <= input$hgb[2],
         Platelet >= input$plat[1] & Platelet <= input$plat[2]
       ) %>%
-      filter(if_any(all_of(str_replace_all(input$symptoms, c(" " = ".", "/" = "."))), ~. == 1))
-      
+      filter(if_any(all_of(str_replace_all(input$symptoms, c(" " = ".", "/" = "."))), ~ . == 1))
   })
 
   output$members <- renderText({
@@ -51,7 +52,8 @@ server <- function(input, output) {
       ",\nRBC:", input$rbc[1], "-", input$rbc[2],
       ",\nHGB:", input$hgb[1], "-", input$hgb[2],
       ",\nPlatelet:", input$plat[1], "-", input$plat[2],
-      "Feature ", input$featureidiom2
+      "Feature:", input$featureidiom2,
+      "Levels:", paste(input$levels, collapse = ", ")
     )
   })
 
@@ -62,10 +64,19 @@ server <- function(input, output) {
 
     data <- filter_dataset()
 
-    p <- ggplot(data = data, aes(x = as.numeric(.data[[input$xaxis]]), y = as.numeric(.data[[input$yaxis]]))) +
+    # Compute min and max values for x-axis
+    min_value_x <- min(dataset[[x_axis]], na.rm = TRUE)
+    max_value_x <- max(dataset[[x_axis]], na.rm = TRUE)
+    min_value_y <- min(dataset[[y_axis]], na.rm = TRUE)
+    max_value_y <- max(dataset[[y_axis]], na.rm = TRUE)
+
+    # Create the scatterplot
+    p <- ggplot(data, aes(x = as.numeric(.data[[x_axis]]), y = as.numeric(.data[[y_axis]]))) +
       geom_point() +
       theme(legend.position = "top") +
-      labs(title = paste("Scatterplot", input$xaxis, " vs ", input$yaxis), x = input$xaxis, y = input$yaxis)
+      labs(title = paste("Scatterplot", x_axis, " vs ", y_axis), x = x_axis, y = y_axis) +
+      coord_cartesian(xlim = c(min_value_x, max_value_x), ylim= c(min_value_y, max_value_y))
+
     return(p)
   })
 
@@ -74,32 +85,35 @@ server <- function(input, output) {
 
     data <- filter_dataset()
 
-
     feature <- input$featureidiom2
-    target <- "Baselinehistological.staging"
-    data_subset <- data %>% select(feature, target)
-    
+
     # Create a bar plot
-    plot <-  ggplot(data_subset, aes(x = factor(data_subset[[target]]), y = data_subset[[feature]])) +
-    geom_violin(fill = "lightblue", draw_quantiles = c(0.25, 0.5, 0.75)) +
-    geom_jitter(color = "darkblue", width = 0.2) +
-    labs(title = paste("Distribution of", feature, "with respect to", target),
-        x = target, y = feature)
+    plot <- ggplot(data = data, aes(x = factor(.data[[TARGET]]), y = .data[[TARGET]])) +
+      geom_violin(fill = "lightblue", draw_quantiles = c(0.25, 0.5, 0.75)) +
+      geom_jitter(color = "darkblue", width = 0.2) +
+      labs(
+        title = paste("Distribution of", feature, "with respect to", TARGET),
+        x = TARGET, y = feature
+      ) +
+      coord_cartesian(ylim = c(0, 8))
+
 
     return(plot)
   })
 
 
   output$idiom3 <- renderPlot({
+    req(input$levels)
+
     data <- filter_dataset()
 
-    cols <- c(time_series_1, c("Baselinehistological.staging"))
-    df_subset <- data[, cols]
+    data <- data %>% filter(.data[[TARGET]] %in% input$levels)
 
-    size <- 10
-    df_plot <- head(df_subset, size)
 
-    df_plot_long <- df_subset %>%
+    df_plot <- data[, time_series_1]
+
+
+    df_plot_long <- df_plot %>%
       mutate(RowID = row_number())
 
     df_plot_long <- df_plot_long %>%
@@ -111,27 +125,37 @@ server <- function(input, output) {
 
 
     df_plot_long$Time <- factor(df_plot_long$Time,
-      levels = time_series_1,
+      levels = paste0("ALT.", c(1, 4, 12, 24, 36, 48)),
       ordered = TRUE
     )
 
-    df_plot_long$Baselinehistological.staging <- as.factor(df_plot_long$Baselinehistological.staging)
 
-    df_mean_orders <- df_plot_long %>%
+    df_plot_long %>%
       group_by(Time) %>%
-      summarise(mean_value = mean(Value))
+      summarise(
+        mean_value = mean(Value),
+        sd_value = sd(Value)
+      ) -> df_mean_orders
 
+
+    df_mean_orders$Value <- 0
     df_mean_orders$RowID <- 0
 
     p <- ggplot(data = df_plot_long, aes(x = Time, y = Value, group = RowID)) +
-      scale_color_manual(values = colors) +
-      geom_line(aes(color = Baselinehistological.staging)) +
       geom_line(data = df_mean_orders, aes(x = Time, y = mean_value), color = "red", linetype = "dotted", linewidth = 1.5) +
+      geom_line(color = "#629bdb") +
+      geom_ribbon(
+        data = df_mean_orders,
+        aes(x = Time, ymin = mean_value - sd_value, ymax = mean_value + sd_value),
+        fill = "#c2d361", alpha = 0.3
+      ) +
       theme_minimal() +
       labs(x = "Time", y = "Value") +
       theme(
-        aspect.ratio = 1 / 3, # Establecer una relación de aspecto para que el gráfico sea tres veces más ancho que alto
-      )
+        aspect.ratio = 1 / 3
+      ) +
+      theme(legend.position = "none") +
+      coord_cartesian(ylim = c(0, 150))
 
     return(p)
   })
