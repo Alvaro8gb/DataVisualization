@@ -147,15 +147,23 @@ server <- function(input, output) {
       geom_ribbon(
         data = df_mean_orders,
         aes(x = Time, ymin = mean_value - sd_value, ymax = mean_value + sd_value),
-        fill = "#c2d361", alpha = 0.3
+        fill = "#a3b349", alpha = 0.3
       ) +
       theme_minimal() +
       labs(x = "Time", y = "Value") +
       theme(
-        aspect.ratio = 1 / 3
+        aspect.ratio = 1 / 4
       ) +
       theme(legend.position = "none") +
       coord_cartesian(ylim = c(0, 150))
+
+
+     if (input$inplot3) {
+        p <- p +
+          geom_hline(yintercept = 56, linetype = "dashed", color = "green", size = 1) + # Max normal ALT value # https://www.ncbi.nlm.nih.gov/books/NBK559278/
+          geom_hline(yintercept = 7, linetype = "dashed", color = "orange", size = 1)   # Min normal ALT value
+      }
+
 
     return(p)
   })

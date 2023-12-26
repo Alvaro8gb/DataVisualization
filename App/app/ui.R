@@ -58,10 +58,11 @@ ui <- fluidPage(
     ),
     fluidRow(
       style = style,
+      helpText("3. Idiom"),
       fluidRow(
          column(6, selectInput("levels", "Base line histological Staging", choices = levels, multiple = TRUE, selected = "1")),
+         column(6, checkboxInput("inplot3", "Min/Max", value = FALSE))
       ),
-      helpText("3. Idiom"),
       plotOutput("idiom3"),
     )
   )
