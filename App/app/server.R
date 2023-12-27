@@ -61,20 +61,23 @@ server <- function(input, output) {
     req(input$xaxis, input$yaxis)
     x_axis <- input$xaxis
     y_axis <- input$yaxis
+    s_value <- input$svalue
+    c_value <- input$color
 
     data <- filter_dataset()
 
-    # Compute min and max values for x-axis
+    # Compute min and max values for x-axis and y-axis
     min_value_x <- min(dataset[[x_axis]], na.rm = TRUE)
     max_value_x <- max(dataset[[x_axis]], na.rm = TRUE)
     min_value_y <- min(dataset[[y_axis]], na.rm = TRUE)
     max_value_y <- max(dataset[[y_axis]], na.rm = TRUE)
 
     # Create the scatterplot
-    p <- ggplot(data, aes(x = as.numeric(.data[[x_axis]]), y = as.numeric(.data[[y_axis]]))) +
-      geom_point() +
+    p <- ggplot(data, aes(x = as.numeric(.data[[x_axis]]), y = as.numeric(.data[[y_axis]]), size = as.numeric(.data[[s_value]]))) +
+      geom_point(alpha=0.5, color= 'steelblue') +
+      scale_size(range=c(2, 10), name= s_value) +
       theme(legend.position = "top") +
-      labs(title = paste("Scatterplot", x_axis, " vs ", y_axis), x = x_axis, y = y_axis) +
+      labs(title = paste("Bubble Chart :", x_axis, " vs ", y_axis, "with", s_value), x = x_axis, y = y_axis) +
       coord_cartesian(xlim = c(min_value_x, max_value_x), ylim= c(min_value_y, max_value_y))
 
     return(p)

@@ -44,7 +44,9 @@ ui <- fluidPage(
       helpText("1. Idiom."),
       fluidRow(
         column(6, selectInput("xaxis", "X-axis", choices = c("BMI", "WBC", "Baselinehistological.staging", "Baseline.histological.Grading", "Age"))),
-        column(6, selectInput("yaxis", "Y-axis", choices = c("Baselinehistological.staging", "Baseline.histological.Grading", "BMI", "Age")))
+        column(6, selectInput("yaxis", "Y-axis", choices = c("Baselinehistological.staging", "WBC", "Baseline.histological.Grading", "BMI", "Age"))),
+        column(6, selectInput("svalue", "Size", choices = c("Age", "WBC", "Baselinehistological.staging", "Baseline.histological.Grading", "BMI"))),
+
       ),
       plotOutput("idiom1"),
     ),
