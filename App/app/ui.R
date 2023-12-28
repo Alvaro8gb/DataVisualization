@@ -6,8 +6,10 @@ style <- "background-color: #F4F5F5;padding: 5px;"
 
 members <- list("Alvaro", "Maxi", "Mikel")
 
-yes_no <- c("Fever", "Nausea/Vomting", "Headache", "Diarrhea", "Fatigue generalized bone ache", "Jaundice", "Epigastric pain")
+yes_no <- c("Fever", "Nausea/Vomting", "Headache", "Diarrhea", "Fatigue generalized bone ache", "Jaundice", "Epigastric pain","Age","Gender","BMI")
 gender_choices <- c("Both", "Male", "Female")
+attribute_choices <- c("--","Yes", "No")
+
 
 levels <- unique(dataset$Baselinehistological.staging)
 
@@ -17,6 +19,7 @@ ui <- fluidPage(
       #sidebar {
         position: fixed;
         width: 30%;
+        height: 88%;
         background-color: #f8f9fa;
         border-right: 1px solid #dee2e6;
         overflow-y: auto;
@@ -31,14 +34,21 @@ ui <- fluidPage(
     sliderInput("age", "Age", min = min(dataset$Age), max = max(dataset$Age), value = c(min(dataset$Age), max(dataset$Age))),
     selectInput("gender", "Gender", choices = gender_choices),
     sliderInput("bmi", "BMI (Body Mass Index)", min = min(dataset$BMI), max = max(dataset$BMI), value = c(min(dataset$BMI), max(dataset$BMI))),
-    checkboxGroupInput("symptoms", "Symptoms", choices = yes_no),
+    #checkboxGroupInput("symptoms", "Symptoms", choices = yes_no),
+    selectInput("Fever", "Fever", choices = attribute_choices),
+    selectInput("Nausea.Vomting", "Nausea.Vomting", choices = attribute_choices),
+    selectInput("Headache", "Headache", choices = attribute_choices),
+    selectInput("Diarrhea", "Diarrhea", choices = attribute_choices),
+    selectInput("Fatigue.generalized.bone.ache", "Fatigue.generalized.bone.ache", choices = attribute_choices),
+    selectInput("Jaundice", "Jaundice", choices = attribute_choices),
+    selectInput("Epigastric.pain", "Epigastric.pain", choices = attribute_choices),
     sliderInput("wbc", "WBC (White blood cell)", min = 299, max = 12101, value = c(299, 12101)),
     sliderInput("rbc", "RBC (Red blood cells)", min = 3816422, max = 5018451, value = c(3816422, 5018451)),
     sliderInput("hgb", "HGB (Hemoglobin)", min = 10, max = 15, value = c(10, 15)),
     sliderInput("plat", "Platelet", min = 93013, max = 226464, value = c(93013, 226464))
   ),
   mainPanel(
-    textOutput("selectedValues"),
+    #textOutput("selectedValues"),
     fluidRow(
       style = style,
       helpText("1. Idiom."),

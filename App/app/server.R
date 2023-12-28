@@ -14,11 +14,29 @@ members <- list("Alvaro", "Maxi", "Mikel")
 
 time_series_1 <- c("ALT.1", "ALT.4", "ALT.12", "ALT.24", "ALT.36", "ALT.48")
 
+categorical_features <- c(
+  "Gender",
+  "Fever",
+  "Nausea.Vomting",
+  "Headache",
+  "Diarrhea",
+  "Fatigue.generalized.bone.ache",
+  "Jaundice",
+  "Epigastric.pain"
+)
+
+continius_features <- c(
+  "WBC", "HGB", "RBC", "Age",
+  "BMI", "Platelet"
+)
+
 TARGET <- "Baselinehistological.staging"
 
 
 # Map input values to corresponding values in the dataset
 gender_mapping <- c("Male" = "1", "Female" = "2", "Both" = "3")
+
+attributes_mapping <- c("Yes" = "1", "No" = "2","--" = "3")
 
 server <- function(input, output) {
   # TODO -sintoms filtering and others
@@ -32,13 +50,21 @@ server <- function(input, output) {
         WBC >= input$wbc[1] & WBC <= input$wbc[2],
         RBC >= input$rbc[1] & RBC <= input$rbc[2],
         HGB >= input$hgb[1] & HGB <= input$hgb[2],
-        Platelet >= input$plat[1] & Platelet <= input$plat[2]
-      ) %>%
-      filter(if_any(all_of(str_replace_all(input$symptoms, c(" " = ".", "/" = "."))), ~ . == 1))
+        Platelet >= input$plat[1] & Platelet <= input$plat[2],
+        (Fever==attributes_mapping[input$Fever]|input$Fever=="--"),
+        (Nausea.Vomting==attributes_mapping[input$Nausea.Vomting]|input$Nausea.Vomting=="--"),
+        (Headache==attributes_mapping[input$Headache]|input$Headache=="--"),
+        (Diarrhea==attributes_mapping[input$Diarrhea]|input$Diarrhea=="--"),
+        (Fatigue.generalized.bone.ache==attributes_mapping[input$Fatigue.generalized.bone.ache]|input$Fatigue.generalized.bone.ache=="--"),
+        (Jaundice==attributes_mapping[input$Jaundice]|input$Jaundice=="--"),
+        (Epigastric.pain==attributes_mapping[input$Epigastric.pain]|input$Epigastric.pain=="--")
+      )
   })
 
   output$members <- renderText({
+    data <- filter_dataset()
     paste("Authors:", paste(members, collapse = ", "))
+    paste("Number of rows being shown: ", paste(nrow(data), collapse = ", "))
   })
 
   output$selectedValues <- renderText({
@@ -88,20 +114,34 @@ server <- function(input, output) {
 
     data <- filter_dataset()
 
-    feature <- input$featureidiom2
-
+    feature <- str_replace_all(input$featureidiom2, c(" " = ".", "/" = "."))
+    
     # Create a bar plot
-    plot <- ggplot(data = data, aes(x = factor(.data[[TARGET]]), y = .data[[TARGET]])) +
-      geom_violin(fill = "lightblue", draw_quantiles = c(0.25, 0.5, 0.75)) +
-      geom_jitter(color = "darkblue", width = 0.2) +
-      labs(
-        title = paste("Distribution of", feature, "with respect to", TARGET),
-        x = TARGET, y = feature
-      ) +
-      coord_cartesian(ylim = c(0, 8))
+   # plot <- ggplot(data = data, aes(x = factor(.data[[TARGET]]), y = .data[[TARGET]])) +
+    #  geom_violin(fill = "lightblue", draw_quantiles = c(0.25, 0.5, 0.75)) +
+    #  geom_jitter(color = "darkblue", width = 0.2) +
+    #  labs(
+    #   title = paste("Distribution of", feature, "with respect to", TARGET),
+    #    x = TARGET, y = feature
+    #  ) +
+    #  coord_cartesian(ylim = c(0, 8))
+    
+    p <- ggplot(data, aes_string(x = feature))
+    
+    if (feature %in% categorical_features) {
+      p <- p + 
+        geom_bar(binwidth = 0.2, fill = "lightblue", color = "darkblue", aes(y = after_stat(count))) +
+        labs(title = paste("Distribution of", feature), x = "Value", y = "Frequency")
+    }
+    else if (feature %in% continius_features) {
+      p <- p + 
+        geom_histogram(fill = "lightblue", color = "darkblue", aes(y = ..count..)) +
+        labs(title = paste("Distribution of", feature), x = "Value", y = "Frequency")
+    }else{
+      paste("Error:", paste(members, collapse = ", "))
+    }      
+    return(p)
 
-
-    return(plot)
   })
 
 
