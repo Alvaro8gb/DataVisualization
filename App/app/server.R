@@ -63,7 +63,7 @@ server <- function(input, output) {
 
   output$meta_info <- renderText({
     data <- filter_dataset()
-    paste("Authors:", paste(members, collapse = ", "),"\nNumber of rows being shown: ", paste(nrow(data), collapse = ", "));
+    paste("Authors:", paste(members, collapse = ", "),"\nNumber of patients being shown: ", paste(nrow(data), collapse = ", "));
   })
 
   output$selectedValues <- renderText({

@@ -14,9 +14,22 @@ attribute_choices <- c("--","Yes", "No")
 levels <- unique(dataset$Baselinehistological.staging)
 
 ui <- fluidPage(
+  tags$head(
+    tags$style(HTML("
+      #sidebar {
+        position: fixed;
+        width: 30%;
+        height: 88%;
+        background-color: #f8f9fa;
+        border-right: 1px solid #dee2e6;
+        overflow-y: auto;
+      }
+    "))
+  ),
   titlePanel("Hepatitis Visualization App"),
   verbatimTextOutput("meta_info"),
   sidebarPanel(
+    id = "sidebar",
     titlePanel("Cohort Selection"),
     sliderInput("age", "Age", min = min(dataset$Age), max = max(dataset$Age), value = c(min(dataset$Age), max(dataset$Age))),
     selectInput("gender", "Gender", choices = gender_choices),
