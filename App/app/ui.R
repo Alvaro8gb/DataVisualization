@@ -15,7 +15,7 @@ levels <- unique(dataset$Baselinehistological.staging)
 
 ui <- fluidPage(
   titlePanel("Hepatitis Visualization App"),
-  verbatimTextOutput("members"),
+  verbatimTextOutput("meta_info"),
   sidebarPanel(
     titlePanel("Cohort Selection"),
     sliderInput("age", "Age", min = min(dataset$Age), max = max(dataset$Age), value = c(min(dataset$Age), max(dataset$Age))),

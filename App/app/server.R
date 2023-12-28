@@ -61,10 +61,9 @@ server <- function(input, output) {
       )
   })
 
-  output$members <- renderText({
+  output$meta_info <- renderText({
     data <- filter_dataset()
-    paste("Authors:", paste(members, collapse = ", "))
-    paste("Number of rows being shown: ", paste(nrow(data), collapse = ", "))
+    paste("Authors:", paste(members, collapse = ", "),"\nNumber of rows being shown: ", paste(nrow(data), collapse = ", "));
   })
 
   output$selectedValues <- renderText({
@@ -103,8 +102,8 @@ server <- function(input, output) {
       geom_point(alpha=0.5, color= 'steelblue') +
       scale_size(range=c(2, 10), name= s_value) +
       theme(legend.position = "top") +
-      labs(title = paste("Bubble Chart :", x_axis, " vs ", y_axis, "with", s_value), x = x_axis, y = y_axis) +
-      coord_cartesian(xlim = c(min_value_x, max_value_x), ylim= c(min_value_y, max_value_y))
+      labs(title = paste("Bubble Chart :", x_axis, " vs ", y_axis, "with", s_value), x = x_axis, y = y_axis) 
+      +#coord_cartesian(xlim = c(min_value_x, max_value_x), ylim= c(min_value_y, max_value_y))
 
     return(p)
   })
