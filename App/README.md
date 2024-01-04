@@ -34,3 +34,18 @@ contains information about Hepatitis C Virus (HCV) for Egyptian patients, dont h
 | RNA 4                       | Feature | Integer |                        |                                
 | RNA 12                      | Feature | Integer |                        |                                
 
+## Intall dependencis
+
+
+
+```bash
+Rscript dependencies.R 
+```
+
+## Lunch App
+
+```bash
+cd app
+chmod +x launch.sh
+./launch.sh
+```

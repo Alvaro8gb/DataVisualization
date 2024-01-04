@@ -6,7 +6,7 @@ style <- "background-color: #F4F5F5;padding: 5px;"
 
 members <- list("Alvaro", "Maxi", "Mikel")
 
-yes_no <- c("Fever", "Nausea/Vomting", "Headache", "Diarrhea", "Fatigue generalized bone ache", "Jaundice", "Epigastric pain","Age","Gender","BMI")
+categorical_features <- c("Fever", "Nausea/Vomting", "Headache", "Diarrhea", "Fatigue generalized bone ache", "Jaundice", "Epigastric pain","Age","Gender","BMI", "Baselinehistological.staging")
 gender_choices <- c("Both", "Male", "Female")
 attribute_choices <- c("--","Yes", "No")
 
@@ -31,10 +31,10 @@ ui <- fluidPage(
   sidebarPanel(
     id = "sidebar",
     titlePanel("Cohort Selection"),
+    p(verbatimTextOutput("n_patients")),
     sliderInput("age", "Age", min = min(dataset$Age), max = max(dataset$Age), value = c(min(dataset$Age), max(dataset$Age))),
     selectInput("gender", "Gender", choices = gender_choices),
     sliderInput("bmi", "BMI (Body Mass Index)", min = min(dataset$BMI), max = max(dataset$BMI), value = c(min(dataset$BMI), max(dataset$BMI))),
-    #checkboxGroupInput("symptoms", "Symptoms", choices = yes_no),
     selectInput("Fever", "Fever", choices = attribute_choices),
     selectInput("Nausea.Vomting", "Nausea.Vomting", choices = attribute_choices),
     selectInput("Headache", "Headache", choices = attribute_choices),
@@ -64,7 +64,7 @@ ui <- fluidPage(
       style = style,
       helpText("2. Idiom"),
       fluidRow(
-        column(6, selectInput("featureidiom2", "Distribution feature", choices = yes_no))
+        column(6, selectInput("featureidiom2", "Distribution feature", choices = categorical_features))
       ),
       plotOutput("idiom2"),
     ),

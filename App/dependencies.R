@@ -1,0 +1,5 @@
+install.packages("shiny")
+install.packages("dplyr")
+install.packages("RColorBrewer")
+install.packages("ggplot2")
+install.packages("stringr")
