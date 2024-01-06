@@ -35,9 +35,6 @@ continius_features <- c(
 )
 
 
-# Map input values to corresponding values in the dataset
-gender_mapping <- c("Male" = "1", "Female" = "2", "Both" = "3")
-
 server <- function(input, output) {
   # TODO -sintoms filtering and others
 
@@ -45,7 +42,7 @@ server <- function(input, output) {
     dataset %>%
       filter(
         Age >= input$age[1] & Age <= input$age[2],
-        (Gender == gender_mapping[input$gender] | input$gender == "Both"),
+        (Gender == input$gender | input$gender == "Both"),
         BMI >= input$bmi[1] & BMI <= input$bmi[2],
         WBC >= input$wbc[1] & WBC <= input$wbc[2],
         RBC >= input$rbc[1] & RBC <= input$rbc[2],
