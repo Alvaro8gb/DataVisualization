@@ -38,8 +38,6 @@ continius_features <- c(
 # Map input values to corresponding values in the dataset
 gender_mapping <- c("Male" = "1", "Female" = "2", "Both" = "3")
 
-attributes_mapping <- c("Yes" = "1", "No" = "2", "--" = "3")
-
 server <- function(input, output) {
   # TODO -sintoms filtering and others
 
@@ -53,13 +51,13 @@ server <- function(input, output) {
         RBC >= input$rbc[1] & RBC <= input$rbc[2],
         HGB >= input$hgb[1] & HGB <= input$hgb[2],
         Platelet >= input$plat[1] & Platelet <= input$plat[2],
-        (Fever == attributes_mapping[input$Fever] | input$Fever == "--"),
-        (Nausea.Vomting == attributes_mapping[input$Nausea.Vomting] | input$Nausea.Vomting == "--"),
-        (Headache == attributes_mapping[input$Headache] | input$Headache == "--"),
-        (Diarrhea == attributes_mapping[input$Diarrhea] | input$Diarrhea == "--"),
-        (Fatigue.generalized.bone.ache == attributes_mapping[input$Fatigue.generalized.bone.ache] | input$Fatigue.generalized.bone.ache == "--"),
-        (Jaundice == attributes_mapping[input$Jaundice] | input$Jaundice == "--"),
-        (Epigastric.pain == attributes_mapping[input$Epigastric.pain] | input$Epigastric.pain == "--")
+        (Fever == input$Fever | input$Fever == "--"),
+        (Nausea.Vomting == input$Nausea.Vomting | input$Nausea.Vomting == "--"),
+        (Headache == input$Headache | input$Headache == "--"),
+        (Diarrhea == input$Diarrhea | input$Diarrhea == "--"),
+        (Fatigue.generalized.bone.ache == input$Fatigue.generalized.bone.ache | input$Fatigue.generalized.bone.ache == "--"),
+        (Jaundice == input$Jaundice | input$Jaundice == "--"),
+        (Epigastric.pain == input$Epigastric.pain | input$Epigastric.pain == "--")
       )
   })
 
@@ -114,6 +112,7 @@ server <- function(input, output) {
 
       return(p)
   })
+
 
   output$idiom2 <- renderPlot({
     req(input$featureidiom2)
