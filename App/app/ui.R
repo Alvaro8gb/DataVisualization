@@ -7,6 +7,7 @@ style <- "background-color: #F4F5F5;padding: 5px;"
 members <- list("Alvaro", "Maxi", "Mikel")
 
 categorical_features <- c("Fever", "Nausea/Vomting", "Headache", "Diarrhea", "Fatigue generalized bone ache", "Jaundice", "Epigastric pain","Age","Gender","BMI", "Baselinehistological.staging")
+yes_no_ <- c("Gender","Fever", "Nausea/Vomting", "Headache", "Diarrhea", "Fatigue generalized bone ache", "Jaundice", "Epigastric pain")
 gender_choices <- c("Both", "Male", "Female")
 attribute_choices <- c("--","Yes", "No")
 
@@ -64,7 +65,8 @@ ui <- fluidPage(
       style = style,
       helpText("2. Idiom"),
       fluidRow(
-        column(6, selectInput("featureidiom2", "Distribution feature", choices = categorical_features))
+        column(6, selectInput("featureidiom2", "Distribution feature", choices = categorical_features)),
+        column(6, selectInput("featureidiom2_", "Group feature", choices = yes_no_))
       ),
       plotOutput("idiom2"),
     ),

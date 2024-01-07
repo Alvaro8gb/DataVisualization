@@ -113,34 +113,26 @@ server <- function(input, output) {
 
   output$idiom2 <- renderPlot({
     req(input$featureidiom2)
+    req(input$featureidiom2_)
 
     data <- filter_dataset()
 
     feature <- str_replace_all(input$featureidiom2, c(" " = ".", "/" = "."))
-
-    # Create a bar plot
-    # plot <- ggplot(data = data, aes(x = factor(.data[[TARGET]]), y = .data[[TARGET]])) +
-    #  geom_violin(fill = "lightblue", draw_quantiles = c(0.25, 0.5, 0.75)) +
-    #  geom_jitter(color = "darkblue", width = 0.2) +
-    #  labs(
-    #   title = paste("Distribution of", feature, "with respect to", TARGET),
-    #    x = TARGET, y = feature
-    #  ) +
-    #  coord_cartesian(ylim = c(0, 8))
-
-    p <- ggplot(data, aes_string(x = feature))
+    
+    feature_ <- str_replace_all(input$featureidiom2_, c(" " = ".", "/" = "."))
 
     if (feature %in% categorical_features) {
-      p <- p +
-        geom_bar(fill = "lightblue", color = "darkblue", aes(y = after_stat(count))) +
-        labs(title = paste("Distribution of", feature), x = "Value", y = "Frequency")
-    } else if (feature %in% continius_features) {
-      p <- p +
-        geom_histogram(fill = "lightblue", color = "darkblue", aes(y = ..count..)) +
-        labs(title = paste("Distribution of", feature), x = "Value", y = "Frequency")
-    } else {
-      paste("Error:", paste(members, collapse = ", "))
+      p <- ggplot(data, aes(x = factor(.data[[feature]]), fill = factor(.data[[feature_]]))) +
+        geom_bar(position = "dodge", stat = "count") +
+        labs(title = paste("Distribution of ", feature, ", grouped by", feature_), x = paste(feature," value"), y = "Frequency")
     }
+    else if (feature %in% continius_features) {
+      p <- ggplot(data, aes(x = .data[[feature]], fill = factor(.data[[feature_]]))) +
+        geom_bar(position = "stack", stat = "count") +
+        labs(title = paste("Distribution of ", feature, ", stacked by", feature_), x = paste(feature, " value"), y = "Frequency")
+    }else{
+      paste("Error:", paste(members, collapse = ", "))
+    }      
     return(p)
   })
 
