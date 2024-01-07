@@ -118,21 +118,20 @@ server <- function(input, output) {
     data <- filter_dataset()
 
     feature <- str_replace_all(input$featureidiom2, c(" " = ".", "/" = "."))
-    
+
     feature_ <- str_replace_all(input$featureidiom2_, c(" " = ".", "/" = "."))
 
     if (feature %in% categorical_features) {
       p <- ggplot(data, aes(x = factor(.data[[feature]]), fill = factor(.data[[feature_]]))) +
         geom_bar(position = "dodge", stat = "count") +
-        labs(title = paste("Distribution of ", feature, ", grouped by", feature_), x = paste(feature," value"), y = "Frequency")
-    }
-    else if (feature %in% continius_features) {
+        labs(title = paste("Distribution of ", feature, ", grouped by", feature_), x = paste(feature, " value"), y = "Frequency")
+    } else if (feature %in% continius_features) {
       p <- ggplot(data, aes(x = .data[[feature]], fill = factor(.data[[feature_]]))) +
         geom_bar(position = "stack", stat = "count") +
         labs(title = paste("Distribution of ", feature, ", stacked by", feature_), x = paste(feature, " value"), y = "Frequency")
-    }else{
+    } else {
       paste("Error:", paste(members, collapse = ", "))
-    }      
+    }
     return(p)
   })
 

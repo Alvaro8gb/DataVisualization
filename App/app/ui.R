@@ -6,10 +6,10 @@ style <- "background-color: #F4F5F5;padding: 5px;"
 
 members <- list("Alvaro", "Maxi", "Mikel")
 
-categorical_features <- c("Fever", "Nausea/Vomting", "Headache", "Diarrhea", "Fatigue generalized bone ache", "Jaundice", "Epigastric pain","Age","Gender","BMI", "Baselinehistological.staging")
-yes_no_ <- c("Gender","Fever", "Nausea/Vomting", "Headache", "Diarrhea", "Fatigue generalized bone ache", "Jaundice", "Epigastric pain")
+categorical_features <- c("Fever", "Nausea/Vomting", "Headache", "Diarrhea", "Fatigue generalized bone ache", "Jaundice", "Epigastric pain", "Age", "Gender", "BMI", "Baselinehistological.staging")
+yes_no_ <- c("Gender", "Fever", "Nausea/Vomting", "Headache", "Diarrhea", "Fatigue generalized bone ache", "Jaundice", "Epigastric pain")
 gender_choices <- c("Both", "Male", "Female")
-attribute_choices <- c("--","Yes", "No")
+attribute_choices <- c("--", "Yes", "No")
 
 
 levels <- unique(dataset$Baselinehistological.staging)
@@ -49,7 +49,7 @@ ui <- fluidPage(
     sliderInput("plat", "Platelet", min = 93013, max = 226464, value = c(93013, 226464))
   ),
   mainPanel(
-    #textOutput("selectedValues"),
+    # textOutput("selectedValues"),
     fluidRow(
       style = style,
       helpText("1. Idiom."),
@@ -57,7 +57,6 @@ ui <- fluidPage(
         column(6, selectInput("xaxis", "X-axis", choices = c("BMI", "WBC", "Baselinehistological.staging", "Baseline.histological.Grading", "Age"))),
         column(6, selectInput("yaxis", "Y-axis", choices = c("Baselinehistological.staging", "WBC", "Baseline.histological.Grading", "BMI", "Age"))),
         column(6, selectInput("svalue", "Size", choices = c("Age", "WBC", "Baselinehistological.staging", "Baseline.histological.Grading", "BMI"))),
-
       ),
       plotOutput("idiom1"),
     ),
@@ -74,8 +73,8 @@ ui <- fluidPage(
       style = style,
       helpText("3. Idiom"),
       fluidRow(
-         column(6, selectInput("levels", "Base line histological Staging", choices = levels, multiple = TRUE, selected = "1")),
-         column(6, checkboxInput("inplot3", "Min/Max", value = FALSE))
+        column(6, selectInput("levels", "Base line histological Staging", choices = levels, multiple = TRUE, selected = "1")),
+        column(6, checkboxInput("inplot3", "Min/Max", value = FALSE))
       ),
       plotOutput("idiom3"),
     )
