@@ -10,11 +10,18 @@ Welcome to the Data Visualization Practical Work repository for the MSc Data Sci
 2. **Shiny App - Hepatitis C Virus (HCV) for Egyptian patients**: In this project, you will find a Shiny application that offers a descriptive analysis of  data. The application provides an interactive platform for exploring and visualizing data related to lung cancer, making it an informative tool for research and analysis. [LINK](./App/)
 
 
+
 ## For deploy the app in Shinny
 
 ```bash
 Rscript deploy.R
 ```
+
+## Final project deploymplent
+
+Deployment in https://www.shinyapps.io/. 
+
+[APP - LINK](https://alvaro8gb.shinyapps.io/HepatitisVisualizationApp/)
 
 
 
